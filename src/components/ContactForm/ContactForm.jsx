@@ -1,7 +1,7 @@
 import { Button, Form, Input, Title } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
 import { nanoid } from 'nanoid';
-import { addContact } from 'store/actions';
+import { addContact } from 'store/slice';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
