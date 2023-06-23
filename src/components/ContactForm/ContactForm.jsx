@@ -1,12 +1,13 @@
 import { Button, Form, Input, Title } from './ContactForm.styled';
 import { useDispatch, useSelector } from 'react-redux/es/exports';
-import { nanoid } from 'nanoid';
-import { addContact } from 'store/slice';
 import { useRef } from 'react';
+import { selectContacts } from 'redux/selectors';
+import { addContactsThunk, getContactsThunk } from 'redux/thunks';
+import { nanoid } from '@reduxjs/toolkit';
 
 const ContactForm = () => {
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contacts);
   const input = useRef();
   const handleSubmit = e => {
     const form = e.target;
@@ -22,7 +23,12 @@ const ContactForm = () => {
       alert(`${formName} is already in contacts`);
       return;
     }
-    dispatch(addContact({ id: nanoid(), name: formName, number: formNumber }));
+
+    dispatch(
+      addContactsThunk({ name: formName, number: formNumber, id: nanoid() })
+    )
+      .unwrap()
+      .then(() => dispatch(getContactsThunk()));
     input.current.blur();
     form.reset();
   };

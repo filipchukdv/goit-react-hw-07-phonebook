@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { Button, Item } from './ContactElem.styled';
 import { useDispatch } from 'react-redux/es/exports';
-import { deleteById } from 'store/slice';
+import { deleteContactsThunk, getContactsThunk } from 'redux/thunks';
 
 const ContactElem = ({ name, number, id }) => {
   const dispatch = useDispatch();
@@ -12,7 +12,9 @@ const ContactElem = ({ name, number, id }) => {
       <Button
         type="button"
         onClick={() => {
-          dispatch(deleteById(id));
+          dispatch(deleteContactsThunk(id))
+            .unwrap()
+            .then(() => dispatch(getContactsThunk()));
         }}
       >
         Delete

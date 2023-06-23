@@ -1,13 +1,17 @@
 import ContactElem from 'components/ContactElem/ContactElem';
 import { Container } from './ContactList.styled';
-import { useSelector } from 'react-redux/es/exports';
+import { useDispatch, useSelector } from 'react-redux/es/exports';
+import { selectFilteredContacts } from 'redux/selectors';
+import { useEffect } from 'react';
+import { getContactsThunk } from 'redux/thunks';
 
 const ContactList = () => {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
-  const filteredContacts = contacts.filter(contact =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredContacts = useSelector(selectFilteredContacts);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getContactsThunk());
+  }, [dispatch]);
 
   return (
     <Container>
